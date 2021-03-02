@@ -1,0 +1,19 @@
+Ex1)
+
+SELECT film.film_id, title, rating, category.name, rental.rental_id, inventory.inventory_id, rental.return_date 
+FROM film, film_category, category,rental,inventory WHERE film.rating IN ('R','PG-13') 
+AND film.film_id=film_category.film_id 
+AND film_category.category_id=category.category_id 
+AND category.name in ('Horror', 'Sci-Fi') 
+AND film.film_id=inventory.film_id 
+AND inventory.inventory_id=rental.inventory_id 
+AND rental.return_date IS null;
+
+Ex2 for this query)
+
+As this is a linear search, we need to optimize it using indexes (e.g. btree)
+
+CREATE INDEX idx_1st_query
+	 ON rental USING btree
+	 (return_date ASC NULLS LAST)
+	 WHERE return_date IS NULL; 
