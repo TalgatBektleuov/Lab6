@@ -1,0 +1,18 @@
+Ex1)
+SELECT city_id, MAX(total), previous.store_id
+FROM address
+JOIN (SELECT store.store_id, SUM(amount) AS total, store.address_id
+  FROM customer 
+  JOIN payment ON customer.customer_id = payment.customer_id
+  JOIN store ON customer.store_id = store.store_id
+  WHERE payment_date BETWEEN TO_DATE('2007-04-14', 'YYYY-MM-DD') AND TO_DATE('2007-05-14', 'YYYY-MM-DD')
+  GROUP BY (store.store_id)) 
+    AS previous ON address.address_id = previous.address_id
+GROUP BY(city_id, previous.store_id)
+
+Ex2) 
+Again, let's create an index
+
+CREATE INDEX idx_2nd_query
+	 ON address USING btree
+	 (city_id ASC NULLS LAST);
